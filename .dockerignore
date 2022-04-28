@@ -1,8 +1,0 @@
-*env/
-README.md
-tests/
-.flake8
-.gitignore
-.mypy
-setup.cfg
-logs/

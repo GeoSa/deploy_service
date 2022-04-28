@@ -43,9 +43,9 @@ def init_logger(level: str) -> None:
             }
         },
         'loggers': {
-            'bot': {
+            'deploy_service': {
                 'handlers': ['console', 'file'],
-                'level': level,
+                # 'level': level,
             }
         },
     })
