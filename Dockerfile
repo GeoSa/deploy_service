@@ -1,6 +1,8 @@
-FROM python:3.10-alpine
+FROM python:3.10
 WORKDIR /usr/src/app
-COPY ./ /usr/src/app
+COPY requirements.txt ./requiremetns.txt
 RUN pip install -r requirements.txt --no-cache-dir
+ADD . /usr/src/app
+RUN chmod a+x entrypoint.sh
 EXPOSE 5000
-CMD python app.py
+CMD [ "/bin/sh", "entrypoint.sh" ]

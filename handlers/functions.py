@@ -15,7 +15,7 @@ def process_request(request_data: dict) -> bool:
     return True
 
 
-def get_image_name(owner: str = None, repository: str = None, tag: str = None) -> [str, str]:
+def get_image_name(owner: str = None, repository: str = None, tag: str = None) -> tuple[str, str]:
     if tag and (not owner or not repository):
         return tag, tag
 
