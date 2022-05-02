@@ -1,20 +1,21 @@
 # Deploy service
 ## Deployment:
 
-### Build image
-docker build -t deploy_service --rm /path/to/Dockerfile
+### Create virtual environment
+python -m venv venv
 
-### Run container
-docker run -dp 8081:5000 --name deploy_Service deploy_service
+### Activate virtual environment
+#### Linux
+source venv/bin/activate
+#### Windows
+venv/Scripts/activate.bat
 
-### Working containers list
-docker ps
+### Install dependencies
+pip install -r requirements.txt
 
-### Restart container
-docker restart deploy_service
-
-### Kill container
-docker kill deploy_service
-
-### Delete container
-docker rm deploy_service
+### Run locally
+#### Via gunicorn
+gunicorn app:app --bind 0.0.0.0:8081 --reload  
+use --daemon flag optionally to run process as a daemon
+#### Via python
+python app.py

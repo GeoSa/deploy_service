@@ -25,10 +25,12 @@ class DockerHandler:
 
         log.info(f'Container {container_name} had been successfully deleted')
 
-    def _deploy_new_container(self, image_name: str, container_name: str, ports: dict) -> bool:
+    def _deploy_new_container(self, image_name: str, container_name: str, ports: dict, build: bool) -> bool:
         try:
-            log.info(f'Pull: {image_name}, Name: {container_name}')
-            self.client.images.pull(image_name)
+            if not build:
+                log.info(f'Pull: {image_name}, Name: {container_name}')
+                self.client.images.pull(image_name)
+
             log.info('Success')
             self._kill_container(container_name)
             log.info('Old container killed')
@@ -40,19 +42,22 @@ class DockerHandler:
         log.info(f'Container {container_name} deployd successfully')
         return True
 
-    def _build_image(self, path: str, image_name: str, container_name: str, ports: dict) -> bool:
+    def _build_image(self, path: str, image_name: str, container_name: str, ports: dict, build: bool) -> bool:
         try:
             self.client.images.build(path=path, rm=True, tag=image_name)
-            return self._deploy_new_container(container_name=container_name, image_name=image_name, ports=ports)
+            return self._deploy_new_container(container_name=container_name, image_name=image_name, ports=ports,
+                                              build=build)
         except Exception as error:
             log.warning(f'Build {image_name} error: {error}')
             return False
 
     def start(self, image_name: str, container_name: str, path: str, ports: dict[str, int], build: bool) -> None:
         if build:
-            success = self._build_image(container_name=container_name, image_name=image_name, ports=ports, path=path)
+            success = self._build_image(container_name=container_name, image_name=image_name, ports=ports, path=path,
+                                        build=build)
         else:
-            success = self._deploy_new_container(image_name=image_name, container_name=container_name, ports=ports)
+            success = self._deploy_new_container(image_name=image_name, container_name=container_name, ports=ports,
+                                                 build=build)
 
         if not success:
             # TODO add send notifications
