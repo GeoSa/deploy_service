@@ -7,7 +7,7 @@ from handlers import process_request, get_image_name
 from logger import init_logger
 
 app = Flask(__name__)
-AUTH_TOKEN = "557e2d4f-064a-43d2-a8c7-5a9da8cf07fc"
+AUTH_TOKEN = os.getenv('AUTH_TOKEN')
 init_logger('deploy_service')
 
 
